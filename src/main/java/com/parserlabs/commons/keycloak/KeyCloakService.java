@@ -24,6 +24,11 @@ public class KeyCloakService {
 		return RSATokenVerifier.create(token).checkActive(true).publicKey(publicKey).getToken();
 	}
 
+	public AccessToken fetchAccessToken(String token, String certUrl) throws Exception {
+		PublicKey publicKey = fetchPublicKey(certUrl);
+		return fetchAccessToken(token, publicKey);
+	}
+
 	@SuppressWarnings("unchecked")
 	public PublicKey fetchPublicKey(String certUrl) throws Exception {
 		ObjectMapper om = new ObjectMapper();
