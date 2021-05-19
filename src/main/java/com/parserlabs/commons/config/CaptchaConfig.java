@@ -1,13 +1,13 @@
 package com.parserlabs.commons.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 
 @Configuration
-@ComponentScan(basePackages = { "com.parserlabs.health.captcha" })
+@ConditionalOnExpression("${captcha.config.enabled:false}")
 public class CaptchaConfig {
 	 @Bean
 	    public ClientHttpRequestFactory clientHttpRequestFactory() {

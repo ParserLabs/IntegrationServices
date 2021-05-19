@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 
 import com.parserlabs.commons.exception.ReCaptchaInvalidException;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@ConditionalOnExpression("${captcha.service.enabled:false}")
 public class CaptchaServiceImpl extends AbstractCaptchaService {
 
 	@Autowired

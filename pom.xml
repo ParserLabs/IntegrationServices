@@ -9,10 +9,10 @@
 		<version>2.4.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.parserlabs.commons</groupId>
-	<artifactId>integration-services</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
-	<name>integration-services</name>
+	<groupId>com.parserlabs.apps.common</groupId>
+	<artifactId>parser-app-framework</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>parserlabs app framework</name>
 	<description>common service for health-id system</description>
 	<properties>
 		<java.version>8</java.version>

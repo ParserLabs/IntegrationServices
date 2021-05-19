@@ -37,6 +37,18 @@ public class NicSmsService implements SMSService {
 
 	@Value("${smsservice.enabled:false}")
 	private boolean otpEnabled;
+	
+	@Value("${sms.service.username}")
+	private String smsServiceUsername;
+
+	@Value("${otp.service.username}")
+	private String otpServiceUsername;
+	
+	@Value("${sms.service.pwd}")
+	private String smsServicePwd;
+	
+	@Value("${otp.service.username}")
+	private String otpServicePwd;
 
 	@Autowired
 	HttpServletRequest httpRequest;
@@ -99,11 +111,9 @@ public class NicSmsService implements SMSService {
 	@Override
 	@Async
 	public boolean sendOTP(String phoneNumber, String message) {
-		String login = "healthid.otp";
-		String pwd = "H0%26aC6%40oS3";
 		boolean result = true;
 		if (otpEnabled) {
-			send(phoneNumber, message(message), login, pwd, templeId(message));
+			send(phoneNumber, message(message), otpServiceUsername, otpServicePwd, templeId(message));
 		}
 		return result;
 	}
@@ -195,11 +205,9 @@ public class NicSmsService implements SMSService {
 	@Override
 	@Async
 	public boolean sendSMS(String phoneNumber, String message) {
-		String login = "healthid.sms";
-		String pwd = "W0%24uB6%26oX1";
 		boolean result = true;
 		if (otpEnabled) {
-			send(phoneNumber, message(message), login, pwd, templeId(message));
+			send(phoneNumber, message(message), smsServiceUsername, smsServicePwd, templeId(message));
 		} else {
 			log.info("SMS Service disabled.");
 		}

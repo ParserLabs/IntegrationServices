@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -22,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@ConditionalOnExpression("${lgd.service.enabled:false}")
 public class LgdService {
 
 	private static final Map<String, StatesDTO> STATE_CODE_MAP = new TreeMap<>();

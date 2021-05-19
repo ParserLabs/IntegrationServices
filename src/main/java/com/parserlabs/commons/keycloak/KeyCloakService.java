@@ -12,11 +12,13 @@ import java.util.Map;
 import org.keycloak.RSATokenVerifier;
 import org.keycloak.common.VerificationException;
 import org.keycloak.representations.AccessToken;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service("keyCloakService")
+@ConditionalOnExpression("${key.cloak.service.enabled:false}")
 public class KeyCloakService {
 
 	public AccessToken fetchAccessToken(String token, PublicKey publicKey) throws VerificationException {

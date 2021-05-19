@@ -2,6 +2,7 @@ package com.parserlabs.commons.google.captcha;
 
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 
 import com.google.common.cache.CacheBuilder;
@@ -9,6 +10,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
 @Service
+@ConditionalOnExpression("${recaptcha.service.enabled:false}")
 public class ReCaptchaAttemptService {
 
 	private final int MAX_ATTEMPT = 4;

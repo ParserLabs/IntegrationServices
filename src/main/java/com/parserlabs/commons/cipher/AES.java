@@ -10,9 +10,11 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@UtilityClass
 public class AES {
 
 	private static final String CIPHER_ALGO = "AES/CBC/PKCS5Padding";

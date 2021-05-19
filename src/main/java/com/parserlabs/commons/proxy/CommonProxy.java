@@ -2,6 +2,7 @@ package com.parserlabs.commons.proxy;
 
 import java.util.Objects;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 @AllArgsConstructor
+@ConditionalOnExpression("${common.proxy.enabled:false}")
 public class CommonProxy<T, R> {
 
 	private RestTemplate restTemplate;
