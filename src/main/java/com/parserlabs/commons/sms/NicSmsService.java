@@ -49,6 +49,9 @@ public class NicSmsService implements SMSService {
 	
 	@Value("${otp.service.username}")
 	private String otpServicePwd;
+	
+	@Value("${app.home}")
+	private String applicationUrl;
 
 	@Autowired
 	HttpServletRequest httpRequest;
@@ -88,7 +91,7 @@ public class NicSmsService implements SMSService {
 	}
 
 	@Override
-	public boolean sendBenefitIntegrationsNotification(String healthIdNumber, String phoneNumber, String benefitName, String applicationUrl) {
+	public boolean sendBenefitIntegrationsNotification(String healthIdNumber, String phoneNumber, String benefitName) {
 		String[] messageParams = new String[2];
 		messageParams[0] = benefitName;
 		messageParams[1] = applicationUrl;
@@ -98,7 +101,7 @@ public class NicSmsService implements SMSService {
 	}
 
 	@Override
-	public boolean sendHealthIdSuccessNotification(String userName, String healthIdNumber, String phoneNumber, String applicationUrl) {
+	public boolean sendHealthIdSuccessNotification(String userName, String healthIdNumber, String phoneNumber) {
 		String[] messageParams = new String[3];
 		messageParams[0] = userName;
 		messageParams[1] = healthIdNumber;
@@ -229,6 +232,29 @@ public class NicSmsService implements SMSService {
 
 	private String templeId(String message) {
 		return !StringUtils.isEmpty(message) ? StringUtils.substringAfter(message, "##") : null;
+	}
+
+	@Override	
+	public boolean sendHealthIdDeactivationNotification(String name, String healthIdNumber,  String phoneNumber ) {
+		String[] messageParams = new String[3];
+	messageParams[0] = name;
+	messageParams[1] = healthIdNumber;
+	messageParams[2] = applicationUrl;
+	log.info("Sending account deactivation notification msg to : {}",phoneNumber);
+	return sendSMS(phoneNumber, 
+			messageSource.getMessage("hid.account.deactivate.msg", 
+					messageParams, httpRequest.getLocale()));
+	}
+	
+	@Override	
+	public boolean sendHealthIdReactivicationNotification(String name, String healthIdNumber,  String phoneNumber ) {
+		String[] messageParams = new String[3];
+	messageParams[0] = name;
+	messageParams[1] = healthIdNumber;
+	log.info("Sending account reactivation notification msg to : {}",phoneNumber);
+	return sendSMS(phoneNumber, 
+			messageSource.getMessage("hid.account.reactivate.msg", 
+					messageParams, httpRequest.getLocale()));
 	}
 
 }
