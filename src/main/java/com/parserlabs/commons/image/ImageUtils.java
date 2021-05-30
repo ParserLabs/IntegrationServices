@@ -16,6 +16,8 @@ import javax.imageio.ImageIO;
 
 import org.apache.tika.Tika;
 
+import com.parserlabs.commons.exception.ImageValidationException;
+
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -118,7 +120,7 @@ public class ImageUtils {
 			isValid = false;
 		}
 		if (!isValid) {
-			throw new RuntimeException(message);
+			throw new ImageValidationException(message);
 		}
 		log.info("the width of image received {} :", convertedImage.getWidth());
 		log.info("the height of image received {} :", convertedImage.getHeight());
