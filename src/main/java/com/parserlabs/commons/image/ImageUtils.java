@@ -15,14 +15,16 @@ import java.util.zip.Inflater;
 import javax.imageio.ImageIO;
 
 import org.apache.tika.Tika;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.stereotype.Service;
 
 import com.parserlabs.commons.exception.ImageValidationException;
 
-import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@UtilityClass
+@Service
+@ConditionalOnExpression("${image.utils.service.enabled:false}")
 public class ImageUtils {
 
 	private static final Long IMAGE_FILE_SIZE_MAX_LIMIT = 100000L;

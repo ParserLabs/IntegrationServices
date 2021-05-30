@@ -53,10 +53,10 @@ public class AllowedLocations {
 
 	private void loadList() {
 		String content = loadData();
-		if (StringUtils.hasLength(content)) {
+		if (!StringUtils.isEmpty(content)) {
 			String[] healthIdArray = content.split("\n");
 			for (String healthId : healthIdArray) {
-				if (StringUtils.hasLength(healthId)) {
+				if (!StringUtils.isEmpty(healthId)) {
 					ALLOWED_LOCATIONS_LIST.add(healthId.trim().toLowerCase());
 				}
 			}
