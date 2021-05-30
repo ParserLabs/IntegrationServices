@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@ConditionalOnExpression("${reserved.health.id.enabled:false}")
 public class ReservedHealthId {
 
 	public static final String HEALTH_ID_SUFFIX = "SUFFIX";

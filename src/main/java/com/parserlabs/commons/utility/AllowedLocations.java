@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@ConditionalOnExpression("${allowed.location.enabled:false}")
 public class AllowedLocations {
 
 	private static final String ALLOWED_LOCATIONS_FILE_NAME = "allowed-locations.txt";

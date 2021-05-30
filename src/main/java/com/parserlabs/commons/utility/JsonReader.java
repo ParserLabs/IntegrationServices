@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnExpression("${common.json.reader.enabled:false}")
 public class JsonReader {
 	
 	public String jsonReader(String filename) throws IOException {
