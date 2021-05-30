@@ -1,25 +1,26 @@
 package com.parserlabs.commons.exception;
 
-public class ReCaptchaInvalidException extends RuntimeException {
+public class ReCaptchaInvalidException extends CommonBusinessException {
 
 	private static final String DEFAULT_MSG = "Please verify captcha.";
+	private static final String CODE = "CAPTCHA_INVALID_EXCEPTION";
 
 	private static final long serialVersionUID = 8036873107023947041L;
 
 	public ReCaptchaInvalidException() {
-		super(DEFAULT_MSG);
+		super(CODE, DEFAULT_MSG);
 	}
 
 	public ReCaptchaInvalidException(String message) {
-		super(message);
+		super(CODE, message);
 	}
 
 	public ReCaptchaInvalidException(String message, Throwable cause) {
-		super(message, cause);
+		super(CODE, message, cause);
 	}
 
 	public ReCaptchaInvalidException(Throwable cause) {
-		super(DEFAULT_MSG, cause);
+		super(CODE, DEFAULT_MSG, cause);
 	}
 
 }

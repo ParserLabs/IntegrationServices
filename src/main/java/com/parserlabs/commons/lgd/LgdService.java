@@ -17,6 +17,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.parserlabs.commons.exception.DistrictNotValidException;
+import com.parserlabs.commons.exception.StateNotValidException;
 import com.parserlabs.commons.utility.JsonReader;
 
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +57,7 @@ public class LgdService {
 		}
 
 		if (!isValidState) {
-			throw new RuntimeException(String.format("enter valid state code: %s", key));
+			throw new StateNotValidException(String.format("enter valid state code: %s", key));
 		}
 		return isValidState;
 	}
@@ -123,7 +125,7 @@ public class LgdService {
 			}
 
 			if (!optionalFindFirst.isPresent() && !isOptional) {
-				throw new RuntimeException(String.format("Enter valid district %s", districtKey));
+				throw new DistrictNotValidException(String.format("Enter valid district %s", districtKey));
 			}
 		}
 		return optionalFindFirst.isPresent() ? optionalFindFirst.get() : null;
