@@ -47,7 +47,7 @@ public class NicSmsService implements SMSService {
 	@Value("${sms.service.pwd}")
 	private String smsServicePwd;
 	
-	@Value("${otp.service.username}")
+	@Value("${otp.service.pwd}")
 	private String otpServicePwd;
 	
 	@Value("${app.home}")
