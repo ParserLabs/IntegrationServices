@@ -3,9 +3,11 @@ package com.parserlabs.commons.cache.redis;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -16,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Repository
 @Slf4j
 @Lazy
-@ConditionalOnResource(resources = "classpath:redis.cache")
+@ConditionalOnExpression("${redis.cache.enabled:false}")
 public class RedisCacheService {
 
 	@Value("${redis.cache.validity.time:120}")
@@ -24,14 +26,20 @@ public class RedisCacheService {
 
 	@Value("${redis.cache.eviction.time:1440}")
 	private long cacheEvictionTimeInMins;
-	
+
 	@Value("${redis.cache.default.key:REDIS-DEFAULT-KEY}")
 	private String defaultRedisKey;
 
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
+
 	private HashOperations<String, String, String> hashOperations; // to access Redis cache
 
-	@Autowired
-	public RedisCacheService(RedisTemplate<String, String> redisTemplate) {
+	/**
+	 * Initializing the Redis Template
+	 */
+	@PostConstruct
+	public void init() {
 		try {
 			redisTemplate.expire(defaultRedisKey, cacheEvictionTimeInMins, TimeUnit.HOURS);
 		} catch (Exception redisExp) {
@@ -92,5 +100,39 @@ public class RedisCacheService {
 		} catch (Exception redisExp) {
 			log.warn("Exception occured while deleting the value into the Redis cache.", redisExp);
 		}
+	}
+
+	/**
+	 * This method will check if the key is present in the cache or not.
+	 * 
+	 * @param hashKey
+	 * @param value
+	 * @return
+	 */
+	public boolean hasKey(String hashKey) {
+		boolean hasKey = false;
+		try {
+			hasKey = hashOperations.hasKey(defaultRedisKey, hashKey);
+		} catch (Exception redisExp) {
+			log.warn("Exception occured while checking the key in the Redis cache.", redisExp);
+		}
+		return hasKey;
+	}
+
+	/**
+	 * This method will return the cached value for the hash key
+	 *
+	 * @param hashKey
+	 * @param value
+	 * @return
+	 */
+	public String get(String hashKey) {
+		String cachedValue = null;
+		try {
+			cachedValue = hashOperations.get(defaultRedisKey, hashKey);
+		} catch (Exception redisExp) {
+			log.warn("Exception occured while fetching the value from the Redis cache.", redisExp);
+		}
+		return cachedValue;
 	}
 }

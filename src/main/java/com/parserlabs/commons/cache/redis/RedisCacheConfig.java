@@ -1,7 +1,7 @@
 package com.parserlabs.commons.cache.redis;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @Slf4j
-@ConditionalOnResource(resources = "classpath:redis.cache")
+@ConditionalOnExpression("${redis.cache.enabled:false}")
 public class RedisCacheConfig {
 
 	@Value("${redis.cache.host}")
