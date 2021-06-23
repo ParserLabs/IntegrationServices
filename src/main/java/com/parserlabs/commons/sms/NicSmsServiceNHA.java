@@ -22,10 +22,10 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Service("SMSService")
+@Service("SMSServiceNHA")
 @Slf4j
 @ConditionalOnExpression("${nic.sms.service.enabled:false}")
-public class NicSmsService implements SMSService {
+public class NicSmsServiceNHA implements SMSServiceNHA {
 
 	private static final String GW_URL = "https://smsgw.sms.gov.in/failsafe/HttpLink?";
 
@@ -53,7 +53,7 @@ public class NicSmsService implements SMSService {
 	@Value("${app.home}")
 	private String applicationUrl;
 	
-	@Value("${smsservice.signature:'HEALTH'}")
+	@Value("${smsservice.signature.nha:'NHASMS'}")
 	private String signature;
 
 	@Autowired
@@ -66,22 +66,6 @@ public class NicSmsService implements SMSService {
 		log.info("Sending hid recovery msg to : {}", phoneNumber);
 		return sendOTP(phoneNumber,
 				messageSource.getMessage("forgot.hid.otp.msg", messageParams, httpRequest.getLocale()));
-	}
-
-	@Override
-	public boolean send(String phoneNumber, String message, String login, String pw, String templeId) {
-
-		String postData = "username=" + login + "&pin=" + pw + "&message=" + message + "&mnumber=" + phoneNumber
-				+ "&signature=" + signature + "&dlt_template_id=" + templeId + "&dlt_entity_id=" + entityId;
-		try {
-			String response = sendSingleSMS(GW_URL, postData, phoneNumber);
-			log.info("SMS Sent: To mobile Number: {} TemplateId:{} GWResponse:{}", phoneNumber, templeId, response);
-		} catch (Exception ex) {
-			log.error("SMS Error: To mobile Number: {} TemplateId:{} GWResponse:{}", phoneNumber, templeId,
-					ex.toString());
-			return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -114,7 +98,6 @@ public class NicSmsService implements SMSService {
 				messageSource.getMessage("registration.success.otp", messageParams, httpRequest.getLocale()));
 	}
 
-	@Override
 	@Async
 	public boolean sendOTP(String phoneNumber, String message) {
 		boolean result = true;
@@ -124,7 +107,73 @@ public class NicSmsService implements SMSService {
 		return result;
 	}
 
-	public String sendSingleSMS(String smsURL, String postData, String mnumber) {
+	@Async
+	public boolean sendSMS(String phoneNumber, String message) {
+		boolean result = true;
+		if (otpEnabled) {
+			send(phoneNumber, message(message), smsServiceUsername, smsServicePwd, templeId(message));
+		} else {
+			log.info("SMS Service disabled.");
+		}
+		return result;
+	}
+
+	@Override
+	public Boolean sendVerificationOtp(String phoneNumber, String otp) {
+		String[] messageParams = new String[1];
+		messageParams[0] = otp;
+		log.info("Sending verification msg to {}", phoneNumber);
+		return sendOTP(phoneNumber,
+				messageSource.getMessage("registration.otp.msg", messageParams, httpRequest.getLocale()));
+	}
+
+	private String message(String message) {
+		return !StringUtils.isEmpty(message) ? StringUtils.substringBefore(message, "##") : null;
+	}
+
+	private String templeId(String message) {
+		return !StringUtils.isEmpty(message) ? StringUtils.substringAfter(message, "##") : null;
+	}
+
+	@Override	
+	public boolean sendHealthIdDeactivationNotification(String name, String healthIdNumber,  String phoneNumber ) {
+		String[] messageParams = new String[3];
+	messageParams[0] = name;
+	messageParams[1] = healthIdNumber;
+	messageParams[2] = applicationUrl;
+	log.info("Sending account deactivation notification msg to : {}",phoneNumber);
+	return sendSMS(phoneNumber, 
+			messageSource.getMessage("hid.account.deactivate.msg", 
+					messageParams, httpRequest.getLocale()));
+	}
+	
+	@Override	
+	public boolean sendHealthIdReactivicationNotification(String name, String healthIdNumber,  String phoneNumber ) {
+		String[] messageParams = new String[3];
+	messageParams[0] = name;
+	messageParams[1] = healthIdNumber;
+	log.info("Sending account reactivation notification msg to : {}",phoneNumber);
+	return sendSMS(phoneNumber, 
+			messageSource.getMessage("hid.account.reactivate.msg", 
+					messageParams, httpRequest.getLocale()));
+	}
+
+	private boolean send(String phoneNumber, String message, String login, String pw, String templeId) {
+
+		String postData = "username=" + login + "&pin=" + pw + "&message=" + message + "&mnumber=" + phoneNumber
+				+ "&signature=" + signature + "&dlt_template_id=" + templeId + "&dlt_entity_id=" + entityId;
+		try {
+			String response = sendSingleSMS(GW_URL, postData, phoneNumber);
+			log.info("SMS Sent: To mobile Number: {} TemplateId:{} GWResponse:{}", phoneNumber, templeId, response);
+		} catch (Exception ex) {
+			log.error("SMS Error: To mobile Number: {} TemplateId:{} GWResponse:{}", phoneNumber, templeId,
+					ex.toString());
+			return false;
+		}
+		return true;
+	}
+	
+	private String sendSingleSMS(String smsURL, String postData, String mnumber) {
 		InputStream is = null;
 		OutputStream os = null;
 		int responseCode = 0;
@@ -208,56 +257,5 @@ public class NicSmsService implements SMSService {
 		return responseBuffer.toString();
 	}
 
-	@Override
-	@Async
-	public boolean sendSMS(String phoneNumber, String message) {
-		boolean result = true;
-		if (otpEnabled) {
-			send(phoneNumber, message(message), smsServiceUsername, smsServicePwd, templeId(message));
-		} else {
-			log.info("SMS Service disabled.");
-		}
-		return result;
-	}
-
-	@Override
-	public Boolean sendVerificationOtp(String phoneNumber, String otp) {
-		String[] messageParams = new String[1];
-		messageParams[0] = otp;
-		log.info("Sending verification msg to {}", phoneNumber);
-		return sendOTP(phoneNumber,
-				messageSource.getMessage("registration.otp.msg", messageParams, httpRequest.getLocale()));
-	}
-
-	private String message(String message) {
-		return !StringUtils.isEmpty(message) ? StringUtils.substringBefore(message, "##") : null;
-	}
-
-	private String templeId(String message) {
-		return !StringUtils.isEmpty(message) ? StringUtils.substringAfter(message, "##") : null;
-	}
-
-	@Override	
-	public boolean sendHealthIdDeactivationNotification(String name, String healthIdNumber,  String phoneNumber ) {
-		String[] messageParams = new String[3];
-	messageParams[0] = name;
-	messageParams[1] = healthIdNumber;
-	messageParams[2] = applicationUrl;
-	log.info("Sending account deactivation notification msg to : {}",phoneNumber);
-	return sendSMS(phoneNumber, 
-			messageSource.getMessage("hid.account.deactivate.msg", 
-					messageParams, httpRequest.getLocale()));
-	}
-	
-	@Override	
-	public boolean sendHealthIdReactivicationNotification(String name, String healthIdNumber,  String phoneNumber ) {
-		String[] messageParams = new String[3];
-	messageParams[0] = name;
-	messageParams[1] = healthIdNumber;
-	log.info("Sending account reactivation notification msg to : {}",phoneNumber);
-	return sendSMS(phoneNumber, 
-			messageSource.getMessage("hid.account.reactivate.msg", 
-					messageParams, httpRequest.getLocale()));
-	}
 
 }
