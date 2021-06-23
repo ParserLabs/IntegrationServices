@@ -21,4 +21,13 @@ public interface SMSService {
 	boolean sendHealthIdDeactivationNotification(String name, String healthIdNumber, String phoneNumber);
 
 	boolean sendHealthIdReactivicationNotification(String name, String healthIdNumber, String phoneNumber);
+
+	/**
+	 * @apiNote Send Mobile OTP to the user
+	 * @param mobile number, smsType, signature, OTPtype, message contains 
+	 * @return true
+	 */
+	boolean sendOTSMSPHealth(String mobileNumber, String msgType, String signature, String OTPType,
+			String[] userMessageParam);
+
 }
