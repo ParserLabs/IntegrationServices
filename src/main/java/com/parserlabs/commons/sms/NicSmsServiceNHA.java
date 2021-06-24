@@ -29,7 +29,7 @@ public class NicSmsServiceNHA implements SMSServiceNHA {
 
 	private static final String GW_URL = "https://smsgw.sms.gov.in/failsafe/HttpLink?";
 
-	@Value("${app.entityId}")
+	@Value("${app.entityId.nha}")
 	private String entityId;
 
 	@Autowired
