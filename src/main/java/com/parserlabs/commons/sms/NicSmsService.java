@@ -53,7 +53,7 @@ public class NicSmsService implements SMSService {
 	@Value("${app.home}")
 	private String applicationUrl;
 	
-	@Value("${smsservice.signature:'HEALTH'}")
+	@Value("${smsservice.signature:HEALTH}")
 	private String signature;
 
 	@Autowired
