@@ -162,6 +162,7 @@ public class NicSmsServiceNHA implements SMSServiceNHA {
 
 		String postData = "username=" + login + "&pin=" + pw + "&message=" + message + "&mnumber=" + phoneNumber
 				+ "&signature=" + signature + "&dlt_template_id=" + templeId + "&dlt_entity_id=" + entityId;
+		log.info("Postdata: {}", postData);
 		try {
 			String response = sendSingleSMS(GW_URL, postData, phoneNumber);
 			log.info("SMS Sent: To mobile Number: {} TemplateId:{} GWResponse:{}", phoneNumber, templeId, response);
