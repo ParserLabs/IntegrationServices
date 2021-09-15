@@ -263,6 +263,9 @@ public class NicSmsServiceNHA implements SMSServiceNHA {
 		messageParams[1] = healthIdNumber;
 		log.info("Sending success notification msg to : {}", phoneNumber);
 		String message = messageSource.getMessage("registration.success.otp", messageParams, httpRequest.getLocale());
+		if(message.contains("{1}")) {
+			message = message.replace("{1}", healthIdNumber);
+		}
 		return sendSMS(phoneNumber, message);
 	}
 
