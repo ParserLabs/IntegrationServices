@@ -37,22 +37,22 @@ public class NicSmsServiceNHA implements SMSServiceNHA {
 
 	@Value("${smsservice.enabled:false}")
 	private boolean otpEnabled;
-	
+
 	@Value("${sms.service.username}")
 	private String smsServiceUsername;
 
 	@Value("${otp.service.username}")
 	private String otpServiceUsername;
-	
+
 	@Value("${sms.service.pwd}")
 	private String smsServicePwd;
-	
+
 	@Value("${otp.service.pwd}")
 	private String otpServicePwd;
-	
+
 	@Value("${app.home}")
 	private String applicationUrl;
-	
+
 	@Value("${smsservice.signature.nha:NHASMS}")
 	private String signature;
 
@@ -135,34 +135,32 @@ public class NicSmsServiceNHA implements SMSServiceNHA {
 		return !StringUtils.isEmpty(message) ? StringUtils.substringAfter(message, "##") : null;
 	}
 
-	@Override	
-	public boolean sendHealthIdDeactivationNotification(String name, String healthIdNumber,  String phoneNumber ) {
+	@Override
+	public boolean sendHealthIdDeactivationNotification(String name, String healthIdNumber, String phoneNumber) {
 		String[] messageParams = new String[3];
-	messageParams[0] = name;
-	messageParams[1] = healthIdNumber;
-	messageParams[2] = applicationUrl;
-	log.info("Sending account deactivation notification msg to : {}",phoneNumber);
-	return sendSMS(phoneNumber, 
-			messageSource.getMessage("hid.account.deactivate.msg", 
-					messageParams, httpRequest.getLocale()));
+		messageParams[0] = name;
+		messageParams[1] = healthIdNumber;
+		messageParams[2] = applicationUrl;
+		log.info("Sending account deactivation notification msg to : {}", phoneNumber);
+		return sendSMS(phoneNumber,
+				messageSource.getMessage("hid.account.deactivate.msg", messageParams, httpRequest.getLocale()));
 	}
-	
-	@Override	
-	public boolean sendHealthIdReactivicationNotification(String name, String healthIdNumber,  String phoneNumber ) {
+
+	@Override
+	public boolean sendHealthIdReactivicationNotification(String name, String healthIdNumber, String phoneNumber) {
 		String[] messageParams = new String[3];
-	messageParams[0] = name;
-	messageParams[1] = healthIdNumber;
-	log.info("Sending account reactivation notification msg to : {}",phoneNumber);
-	return sendSMS(phoneNumber, 
-			messageSource.getMessage("hid.account.reactivate.msg", 
-					messageParams, httpRequest.getLocale()));
+		messageParams[0] = name;
+		messageParams[1] = healthIdNumber;
+		log.info("Sending account reactivation notification msg to : {}", phoneNumber);
+		return sendSMS(phoneNumber,
+				messageSource.getMessage("hid.account.reactivate.msg", messageParams, httpRequest.getLocale()));
 	}
 
 	private boolean send(String phoneNumber, String message, String login, String pw, String templeId) {
 
 		String postData = "username=" + login + "&pin=" + pw + "&message=" + message + "&mnumber=" + phoneNumber
 				+ "&signature=" + signature + "&dlt_template_id=" + templeId + "&dlt_entity_id=" + entityId;
-		//log.info("Postdata: {}", postData);
+		// log.info("Postdata: {}", postData);
 		try {
 			String response = sendSingleSMS(GW_URL, postData, phoneNumber);
 			log.info("SMS Sent: To mobile Number: {} TemplateId:{} GWResponse:{}", phoneNumber, templeId, response);
@@ -173,7 +171,7 @@ public class NicSmsServiceNHA implements SMSServiceNHA {
 		}
 		return true;
 	}
-	
+
 	private String sendSingleSMS(String smsURL, String postData, String mnumber) {
 		InputStream is = null;
 		OutputStream os = null;
@@ -258,5 +256,14 @@ public class NicSmsServiceNHA implements SMSServiceNHA {
 		return responseBuffer.toString();
 	}
 
+	@Override
+	public boolean sendDocumentIdSuccessNotification(String userName, String healthIdNumber, String phoneNumber) {
+		String[] messageParams = new String[2];
+		messageParams[0] = userName;
+		messageParams[1] = healthIdNumber;
+		log.info("Sending success notification msg to : {}", phoneNumber);
+		String message = messageSource.getMessage("registration.success.otp", messageParams, httpRequest.getLocale());
+		return sendSMS(phoneNumber, message);
+	}
 
 }

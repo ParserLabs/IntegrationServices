@@ -11,6 +11,8 @@ public interface SMSServiceNHA {
 	boolean forgotHidOtp(String phoneNumber, String otp);
 
 	boolean sendHealthIdSuccessNotification(String userName, String healthIdNumber, String phoneNumber);
+	
+	boolean sendDocumentIdSuccessNotification(String userName, String healthIdNumber, String phoneNumber);
 
 	boolean sendHealthIdDeactivationNotification(String name, String healthIdNumber, String phoneNumber);
 
