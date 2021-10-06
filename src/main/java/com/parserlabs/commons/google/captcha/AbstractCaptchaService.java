@@ -10,6 +10,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.parserlabs.commons.exception.ReCaptchaInvalidException;
+import com.parserlabs.commons.google.captcha.v1.CaptchaService;
+import com.parserlabs.commons.google.captcha.v1.ReCaptchaAttemptService;
 
 import lombok.extern.slf4j.Slf4j;
 

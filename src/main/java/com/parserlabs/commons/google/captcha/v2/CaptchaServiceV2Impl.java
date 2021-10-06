@@ -1,4 +1,4 @@
-package com.parserlabs.commons.google.captchav3;
+package com.parserlabs.commons.google.captcha.v2;
 
 import java.net.URI;
 
@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-@ConditionalOnExpression("${recaptcha.service.v2.enabled:false}")
+@ConditionalOnExpression("${recaptcha.service.enterprise.v2.enabled:false}")
 public class CaptchaServiceV2Impl extends AbstractCaptchaService {
 
 	

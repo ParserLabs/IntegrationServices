@@ -1,4 +1,4 @@
-package com.parserlabs.commons.google.captchav3;
+package com.parserlabs.commons.google.captcha.v2;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;

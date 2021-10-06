@@ -1,4 +1,4 @@
-package com.parserlabs.commons.google.captcha;
+package com.parserlabs.commons.google.captcha.v1;
 
 import java.net.URI;
 import java.time.Duration;
@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 
 import com.parserlabs.commons.exception.ReCaptchaInvalidException;
+import com.parserlabs.commons.google.captcha.AbstractCaptchaService;
 import com.parserlabs.commons.proxy.CommonProxy;
 import com.parserlabs.commons.utility.DateUtility;
 

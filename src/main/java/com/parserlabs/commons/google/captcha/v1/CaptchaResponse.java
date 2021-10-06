@@ -1,4 +1,4 @@
-package com.parserlabs.commons.google.captchav3;
+package com.parserlabs.commons.google.captcha.v1;
 
 import java.util.Arrays;
 import java.util.HashMap;
