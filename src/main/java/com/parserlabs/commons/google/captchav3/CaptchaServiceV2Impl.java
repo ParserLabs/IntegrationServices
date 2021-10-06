@@ -16,8 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-@ConditionalOnExpression("${captcha.service.v3.enabled:false}")
-public class CaptchaServiceV3Impl extends AbstractCaptchaService {
+@ConditionalOnExpression("${recaptcha.service.v2.enabled:false}")
+public class CaptchaServiceV2Impl extends AbstractCaptchaService {
 
 	
 
@@ -32,7 +32,7 @@ public class CaptchaServiceV3Impl extends AbstractCaptchaService {
 		//client ip
 		String client_ip = GeneralUtils.getClientIP(request);
 		
-		final URI verifyUri = URI.create(String.format(RECAPTCHA_URL_TEMPLATE_V3, captchaSettings.getApikey()));
+		final URI verifyUri = URI.create(String.format(RECAPTCHA_URL_TEMPLATE_V2, captchaSettings.getApikey()));
 		
 		//Captcha request
 		CaptchaRequest captchaRequest = CaptchaRequest.builder().event(Event.of(token, captchaSettings.getSite(), ""))
@@ -42,9 +42,8 @@ public class CaptchaServiceV3Impl extends AbstractCaptchaService {
 		CaptchaEnterpriseResponse captchaResponse = captchaProxy.post(verifyUri.toString(), captchaRequest,
 				CaptchaEnterpriseResponse.class);
 		if (captchaResponse.getTokenProperties().isValid() && captchaResponse.getScore() > 0.6) {
-			log.info("Captcha was not successfully validated");
+			log.info("Captcha was successfully validated");
 			captchaResult = true;
-			//throw new ReCaptchaInvalidException("reCaptcha was not successfully validated");
 		}else {
 			log.warn("Captcha validation failed with reason {}", 
 					captchaResponse.getTokenProperties().getInvalidReason());
