@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonRootName(value="event")
-public class CaptchaRequest {
+public class CaptchaRequestV2 {
 
 	private Event event;
 	

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({ "success", "score", "action", "challenge_ts", "hostname", "error-codes" })
-public class CaptchaResponse {
+public class CaptchaResponseV2 {
 
 	private boolean success;
 	@JsonProperty("challenge_ts")

@@ -21,7 +21,7 @@ public class CaptchaServiceV2Impl extends AbstractCaptchaService {
 
 	
 
-	private CommonProxy<CaptchaRequest, CaptchaEnterpriseResponse> captchaProxy;
+	private CommonProxy<CaptchaRequestV2, CaptchaEnterpriseResponse> captchaProxy;
 	
 	@Autowired
 	private HttpServletRequest request;
@@ -35,7 +35,7 @@ public class CaptchaServiceV2Impl extends AbstractCaptchaService {
 		final URI verifyUri = URI.create(String.format(RECAPTCHA_URL_TEMPLATE_V2, captchaSettings.getApikey()));
 		
 		//Captcha request
-		CaptchaRequest captchaRequest = CaptchaRequest.builder().event(Event.of(token, captchaSettings.getSite(), ""))
+		CaptchaRequestV2 captchaRequest = CaptchaRequestV2.builder().event(Event.of(token, captchaSettings.getSite(), ""))
 				.build();
 		
 		//Captcha response
