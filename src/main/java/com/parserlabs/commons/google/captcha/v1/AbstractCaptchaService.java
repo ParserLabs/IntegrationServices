@@ -1,4 +1,4 @@
-package com.parserlabs.commons.google.captcha;
+package com.parserlabs.commons.google.captcha.v1;
 
 import java.util.regex.Pattern;
 
@@ -10,8 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.parserlabs.commons.exception.ReCaptchaInvalidException;
-import com.parserlabs.commons.google.captcha.v1.CaptchaService;
-import com.parserlabs.commons.google.captcha.v1.ReCaptchaAttemptService;
+import com.parserlabs.commons.google.captcha.v2.CaptchaSettingsV2;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +19,7 @@ public abstract class AbstractCaptchaService implements CaptchaService {
 	@Autowired
 	protected HttpServletRequest request;
 	@Autowired
-	protected CaptchaSettings captchaSettings;
+	protected CaptchaSettingsV2 captchaSettings;
 	@Autowired
 	protected ReCaptchaAttemptService reCaptchaAttemptService;
 	@Autowired
@@ -30,9 +29,7 @@ public abstract class AbstractCaptchaService implements CaptchaService {
 
 	@Value("${google.recaptcha.url_template}")
 	protected String RECAPTCHA_URL_TEMPLATE;
-	
-	@Value("${google.recaptcha.url_template_v2}")
-	protected String RECAPTCHA_URL_TEMPLATE_V2;
+
 
 	protected void securityCheck(final String response) {
 		log.info("Attempting to validate response {}", response);

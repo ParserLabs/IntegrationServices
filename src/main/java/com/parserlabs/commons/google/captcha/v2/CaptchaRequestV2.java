@@ -2,7 +2,6 @@ package com.parserlabs.commons.google.captcha.v2;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import lombok.AllArgsConstructor;

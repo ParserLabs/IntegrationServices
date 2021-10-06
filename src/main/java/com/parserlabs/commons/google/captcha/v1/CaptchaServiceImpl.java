@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 
 import com.parserlabs.commons.exception.ReCaptchaInvalidException;
-import com.parserlabs.commons.google.captcha.AbstractCaptchaService;
 import com.parserlabs.commons.proxy.CommonProxy;
 import com.parserlabs.commons.utility.DateUtility;
 

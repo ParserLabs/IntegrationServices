@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 
-import com.parserlabs.commons.google.captcha.AbstractCaptchaService;
 import com.parserlabs.commons.proxy.CommonProxy;
 import com.parserlabs.commons.utility.GeneralUtils;
 
@@ -17,10 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @ConditionalOnExpression("${recaptcha.service.enterprise.v2.enabled:false}")
-public class CaptchaServiceV2Impl extends AbstractCaptchaService {
+public class CaptchaServiceV2Impl extends AbstractCaptchaServiceV2 {
 
 	
 
+	@Autowired
 	private CommonProxy<CaptchaRequestV2, CaptchaEnterpriseResponse> captchaProxy;
 	
 	@Autowired

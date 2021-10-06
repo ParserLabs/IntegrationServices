@@ -1,4 +1,4 @@
-package com.parserlabs.commons.google.captcha;
+package com.parserlabs.commons.google.captcha.v1;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
