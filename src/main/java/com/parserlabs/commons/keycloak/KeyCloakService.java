@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@SuppressWarnings("deprecation")
 @Service("keyCloakService")
 @ConditionalOnExpression("${key.cloak.service.enabled:false}")
 public class KeyCloakService {

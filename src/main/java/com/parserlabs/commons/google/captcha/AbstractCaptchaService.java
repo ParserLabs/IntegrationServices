@@ -28,6 +28,9 @@ public abstract class AbstractCaptchaService implements CaptchaService {
 
 	@Value("${google.recaptcha.url_template}")
 	protected String RECAPTCHA_URL_TEMPLATE;
+	
+	@Value("${google.recaptcha.url_template_v3}")
+	protected String RECAPTCHA_URL_TEMPLATE_V3;
 
 	protected void securityCheck(final String response) {
 		log.info("Attempting to validate response {}", response);

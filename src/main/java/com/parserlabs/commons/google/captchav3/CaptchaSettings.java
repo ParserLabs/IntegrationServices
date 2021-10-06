@@ -1,4 +1,4 @@
-package com.parserlabs.commons.google.captcha;
+package com.parserlabs.commons.google.captchav3;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -14,6 +14,5 @@ public class CaptchaSettings {
 	private String secret;
 	private float threshold;
 	private String apikey;
-
 
 }
